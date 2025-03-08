@@ -1,0 +1,152 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Profil {
+  id    String    @id @default(uuid())
+  idutilizator  String @unique
+  nume String 
+  imagineUrl String @db.Text
+  email String @db.Text
+
+  servers Server[]
+  membrii Membru[]
+  canale Canal[]
+
+  
+  updatedAt DateTime @updatedAt
+}
+
+model Server {
+  id String @id @default(uuid())
+  nume String
+  imagineUrl String @db.Text
+  codinvitatie String @unique
+
+  idutilizator String
+  profil Profil @relation(fields: [idutilizator], references: [id], onDelete: Cascade)
+
+  membrii Membru[]
+  canale Canal[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([idutilizator])
+}
+
+enum MembruRol{
+  ADMIN
+  MODERATOR
+  GUEST
+}
+
+model Membru {
+  id String @id @default(uuid())
+  rol MembruRol @default(GUEST)
+
+  idutilizator String
+  profil Profil @relation(fields: [idutilizator], references: [id], onDelete: Cascade)
+
+  serverId String 
+  server Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  mesaje Mesaje[]
+  mesajeDirecte MesajeDirecte[]
+
+  conversatii_trimise Conversatie[] @relation("MembruA")
+  conversatii_primite Conversatie[] @relation("MembruB")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([idutilizator])
+  @@index([serverId])
+}
+
+enum CanalTip{
+  TEXT
+  AUDIO
+  VIDEO
+}
+
+model Canal {
+  id String @id @default(uuid())
+  nume String
+  tip CanalTip @default(TEXT)
+
+  idutilizator String
+  profil Profil @relation(fields: [idutilizator], references: [id], onDelete: Cascade)
+    
+  serverId String 
+  server Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  mesaje Mesaje[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([idutilizator])
+  @@index([serverId])
+}
+
+model Mesaje {
+  id String @id @default(uuid())
+  continut String @db.Text
+  filaUrl String? @db.Text
+
+  membruId String
+  membru Membru @relation(fields: [membruId], references: [id], onDelete: Cascade)
+
+  canalId String
+  canal Canal @relation(fields: [canalId], references: [id], onDelete: Cascade)
+
+  deleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([canalId])
+  @@index([membruId])
+}
+
+model Conversatie {
+  id String @id @default(uuid())
+
+  membruAid String
+  membruA Membru @relation("MembruA", fields: [membruAid], references: [id], onDelete: Cascade)
+
+  membruBid String
+  membruB Membru @relation("MembruB", fields: [membruBid], references: [id], onDelete: Cascade)
+
+  mesajeDirecte MesajeDirecte[]
+  // @@index([membruAid])
+  @@index([membruBid])
+
+  @@unique([membruAid, membruBid])
+}
+
+model MesajeDirecte{
+  id String @id @default(uuid())
+  continut String @db.Text
+  filaUrl String? @db.Text
+
+  membruId String
+  membru Membru @relation(fields: [membruId], references: [id], onDelete: Cascade)
+
+  idconversatie String
+  conversatie Conversatie @relation(fields: [idconversatie], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  deleted Boolean @default(false)
+
+  @@index([membruId])
+  @@index([idconversatie])
+}
