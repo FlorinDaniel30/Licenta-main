@@ -16,8 +16,8 @@ import { useRouter } from "next/navigation";
 
 export const DeleteServerModal = () => {
   const router = useRouter();
-  const { isOpen, onClose, type, data } = useModal();
-  const isModalOpen = isOpen && type === "deleteServer";
+  const { isOpen, onClose, tip, data } = useModal();
+  const isModalOpen = isOpen && tip === "deleteServer";
   const { server } = data;
   const [isLoading, setIsLoading] = useState(false);
   const onClick = async () => {

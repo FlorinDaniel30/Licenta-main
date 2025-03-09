@@ -16,11 +16,11 @@ import { useState } from "react";
 import axios from "axios";
 
 export const InviteModal = () => {
-  const { onOpen, isOpen, onClose, type, data } = useModal();
-  const isModalOpen = isOpen && type === "invite";
+  const { onOpen, isOpen, onClose, tip, data } = useModal();
+  const isModalOpen = isOpen && tip === "invite";
   const origin = useOrigin();
   const { server } = data;
-  const inviteUrl = `${origin}/invite/${server?.inviteCode}`;
+  const inviteUrl = `${origin}/invite/${server?.codinvitatie}`;
 
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

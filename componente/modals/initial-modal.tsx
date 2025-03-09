@@ -27,10 +27,10 @@ import { Button } from "@/componente/ui/button";
 import { useState, useEffect } from "react";
 
 const formSchema = z.object({
-  name: z.string().min(1, {
+  nume: z.string().min(1, {
     message: "Server name is required.",
   }),
-  imageUrl: z.string().min(1, {
+  imagineUrl: z.string().min(1, {
     message: "Server image is required.",
   }),
 });
@@ -45,8 +45,8 @@ export const InitialModal = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      imageUrl: "",
+      nume: "",
+      imagineUrl: "",
     },
   });
 
@@ -84,7 +84,7 @@ export const InitialModal = () => {
               <div className="flex items-center justify-center text-center">
                 <FormField 
                   control={form.control}
-                  name="imageUrl"
+                  nume="imagineUrl"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
@@ -97,7 +97,7 @@ export const InitialModal = () => {
               </div>
               <FormField
                 control={form.control}
-                name="name"
+                nume="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className=" uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">

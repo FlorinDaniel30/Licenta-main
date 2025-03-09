@@ -55,7 +55,7 @@ const MemberIdPage = async ({ params }: MembruIdPageProps) => {
         membru={currentMember}
         nume={otherMember.profil.nume}
         chatId={conv.id}
-        type="conversation"
+        tip="conversatie"
         apiUrl="/api/direct-messages"
         paramKey="conversationId"
         paramValue={conv.id}
