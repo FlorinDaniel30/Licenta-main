@@ -30,7 +30,7 @@ export const ServerSection = ({
       {rol !== MembruRol.GUEST && sectionType === "channels" && (
         <ActionTooltip label="Create Channel" side="top">
           <button
-            onClick={() => onOpen("createChannel", { CanalTip })}
+            onClick={() => onOpen("creazaCanal", { CanalTip })}
             className="text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
           >
             <Plus className="h-4 w-4" />
@@ -40,7 +40,7 @@ export const ServerSection = ({
       {rol === MembruRol.ADMIN && sectionType === "members" && (
         <ActionTooltip label="Manage Members" side="top">
           <button
-            onClick={() => onOpen("members", { server })}
+            onClick={() => onOpen("membrii", { server })}
             className="text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
           >
             <Settings className="h-4 w-4" />

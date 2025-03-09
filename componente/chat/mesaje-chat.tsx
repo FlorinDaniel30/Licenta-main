@@ -9,7 +9,7 @@ import { useChatQuery } from "@/hooks/use-chat-query";
 import { useChatSocket } from "@/hooks/use-chat-socket";
 import { useChatScroll } from "@/hooks/use-chat-scroll";
 
-import { ChatWelcome } from "./chat-welcome";
+import { ChatWelcome } from "./chat-bun-venit";
 import { ChatItem } from "./chat-item";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
@@ -27,7 +27,7 @@ interface ChatMessagesProps {
   apiUrl: string;
   socketUrl: string;
   socketQuery: Record<string, string>;
-  paramKey: "channelId" | "conversationId";
+  paramKey: "canalId" | "conversatieId";
   paramValue: string;
   tip: "canal" | "conversatie";
 }

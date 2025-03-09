@@ -17,15 +17,15 @@ import { useRouter } from "next/navigation";
 
 export const DeleteChannelModal = () => {
   const router = useRouter();
-  const { isOpen, onClose, type, data } = useModal();
-  const isModalOpen = isOpen && type === "deleteChannel";
-  const { server, channel } = data;
+  const { isOpen, onClose, tip, data } = useModal();
+  const isModalOpen = isOpen && tip === "stergeCanal";
+  const { server, canal } = data;
   const [isLoading, setIsLoading] = useState(false);
   const onClick = async () => {
     try {
       setIsLoading(true);
       const url = qs.stringifyUrl({
-        url: `/api/channels/${channel?.id}`,
+        url: `/api/channels/${canal?.id}`,
         query: {
           serverId: server?.id,
         },
@@ -51,7 +51,7 @@ export const DeleteChannelModal = () => {
           <DialogDescription className="text-center text-zinc-500">
             Are you sure you want to delete? <br />
             <span className="font-semibold text-indigo-500">
-              #{channel?.name}
+              #{canal?.nume}
             </span>{" "}
             This action cant be undone!
           </DialogDescription>

@@ -37,8 +37,8 @@ const formSchema = z.object({
 });
 
 export const EditServerModal = () => {
-  const { isOpen, onClose, type, data } = useModal();
-  const isModalOpen = isOpen && type === "editServer";
+  const { isOpen, onClose, tip, data } = useModal();
+  const isModalOpen = isOpen && tip === "editeazaServer";
   const { server } = data;
   const router = useRouter();
 

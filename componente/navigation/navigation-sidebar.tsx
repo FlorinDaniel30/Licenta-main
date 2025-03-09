@@ -19,7 +19,7 @@ export const NavigationSidebar = async () => {
     where: {
       membrii: {
         some: {
-          profilId: profil.id,
+          id: profil.id,
         },
       },
     },

@@ -25,10 +25,10 @@ const formSchema = z.object({
 });
 
 export const MessageFileModal = () => {
-  const { isOpen, onClose, type, data } = useModal();
+  const { isOpen, onClose, tip, data } = useModal();
   const { apiUrl, query } = data;
   const router = useRouter();
-  const isModalOpen = isOpen && type === "messageFile";
+  const isModalOpen = isOpen && tip === "mesajeFila";
 
   const handleClose = () => {
     form.reset();

@@ -16,7 +16,7 @@ import {
 interface ServerSearchProps {
   data: {
     label: string;
-    type: "channel" | "member",
+    tip: "canal" | "membru",
     data: {
       icon: React.ReactNode;
       name: string;
@@ -44,15 +44,15 @@ export const ServerSearch = ({
     return () => document.removeEventListener("keydown", down)
   }, []);
 
-  const onClick = ({ id, type }: { id: string, type: "channel" | "member"}) => {
+  const onClick = ({ id, tip }: { id: string, tip: "canal" | "membru"}) => {
     setOpen(false);
 
-    if (type === "member") {
+    if (tip === "membru") {
       return router.push(`/servers/${params?.serverId}/conversations/${id}`)
     }
 
-    if (type === "channel") {
-      return router.push(`/servers/${params?.serverId}/channels/${id}`)
+    if (tip === "canal") {
+      return router.push(`/servers/${params?.serverId}/canale/${id}`)
     }
   }
 
@@ -80,14 +80,14 @@ export const ServerSearch = ({
           <CommandEmpty>
             No Results found
           </CommandEmpty>
-          {data.map(({ label, type, data }) => {
+          {data.map(({ label, tip, data }) => {
             if (!data?.length) return null;
 
             return (
               <CommandGroup key={label} heading={label}>
                   {data?.map(({ id, icon, name }) => {
                     return (
-                      <CommandItem key={id} onSelect={() => onClick({ id, type })}>
+                      <CommandItem key={id} onSelect={() => onClick({ id, tip })}>
                         {icon}
                         <span>{name}</span>
                       </CommandItem>

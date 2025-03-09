@@ -1,9 +1,9 @@
 import { NextApiRequest } from "next";
-import { MemberRole } from "@prisma/client";
+import { MembruRol } from "@prisma/client";
 
 import { NextApiResponseServerIo } from "@/types";
 import { db } from "@/lib/db";
-import { currentProfile } from "@/lib/profil-curent-pagini";
+import { ProfilCurent } from "@/lib/profil-curent-pagini";
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,7 +14,7 @@ export default async function handler(
   }
 
   try {
-    const profile = await currentProfile(req);
+    const profile = await ProfilCurent(req);
     const { messageId, serverId, channelId } = req.query;
     const { content } = req.body;
     if (!profile) {
@@ -32,14 +32,14 @@ export default async function handler(
     const server = await db.server.findFirst({
       where: {
         id: serverId as string,
-        members: {
+        membrii: {
           some: {
-            profileId: profile.id,
+            profilId: profile.id,
           },
         },
       },
       include: {
-        members: true,
+        membrii: true,
       },
     });
 
@@ -47,34 +47,34 @@ export default async function handler(
       return res.status(404).json({ error: "Server not found" });
     }
 
-    const channel = await db.channel.findFirst({
+    const canal = await db.canal.findFirst({
       where: {
         id: channelId as string,
         serverId: serverId as string,
       },
     });
 
-    if (!channel) {
+    if (!canal) {
       return res.status(404).json({ error: "Channel not found" });
     }
 
-    const member = server.members.find(
-      (member) => member.profileId === profile.id
+    const membru = server.membrii.find(
+      (membru) => membru.profileId === profile.id
     );
 
-    if (!member) {
+    if (!membru) {
       return res.status(404).json({ error: "Member not found" });
     }
 
-    let message = await db.message.findFirst({
+    let message = await db.mesaje.findFirst({
       where: {
         id: messageId as string,
-        channelId: channelId as string,
+        canalId: channelId as string,
       },
       include: {
-        member: {
+        membru: {
           include: {
-            profile: true,
+            profil: true,
           },
         },
       },
@@ -84,9 +84,9 @@ export default async function handler(
       return res.status(404).json({ error: "Message not found" });
     }
 
-    const isMessageOwner = message.memberId === member.id;
-    const isAdmin = member.role === MemberRole.ADMIN;
-    const isModerator = member.role === MemberRole.MODERATOR;
+    const isMessageOwner = message.membruId === membru.id;
+    const isAdmin = membru.rol === MembruRol.ADMIN;
+    const isModerator = membru.rol === MembruRol.MODERATOR;
     const canModify = isMessageOwner || isAdmin || isModerator;
 
     if (!canModify) {
@@ -94,19 +94,19 @@ export default async function handler(
     }
 
     if (req.method === "DELETE") {
-      message = await db.message.update({
+      mesaje = await db.mesaje.update({
         where: {
           id: messageId as string,
         },
         data: {
-          fileUrl: null,
-          content: "This message has been deleted.",
+          filaUrl: null,
+          continut: "This message has been deleted.",
           deleted: true,
         },
         include: {
-          member: {
+          membru: {
             include: {
-              profile: true,
+              profil: true,
             },
           },
         },
@@ -118,17 +118,17 @@ export default async function handler(
         return res.status(401).json({ error: "Unauthorized" });
       }
 
-      message = await db.message.update({
+      mesaje = await db.mesaje.update({
         where: {
           id: messageId as string,
         },
         data: {
-          content,
+          continut,
         },
         include: {
-          member: {
+          membru: {
             include: {
-              profile: true,
+              profil: true,
             },
           },
         },

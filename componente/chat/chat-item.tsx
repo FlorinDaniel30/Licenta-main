@@ -240,7 +240,7 @@ export const ChatItem = ({
           <ActionTooltip label="Delete">
             <Trash
               onClick={() =>
-                onOpen("deleteMessage", {
+                onOpen("stergeMesaj", {
                   apiUrl: `${socketUrl}/${id}`,
                   query: socketQuery,
                 })

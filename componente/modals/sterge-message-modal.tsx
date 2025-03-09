@@ -15,8 +15,8 @@ import { useState } from "react";
 import axios from "axios";
 
 export const DeleteMessageModal = () => {
-  const { isOpen, onClose, type, data } = useModal();
-  const isModalOpen = isOpen && type === "deleteMessage";
+  const { isOpen, onClose, tip, data } = useModal();
+  const isModalOpen = isOpen && tip === "stergeMesaj";
   const { apiUrl, query } = data;
   const [isLoading, setIsLoading] = useState(false);
   const onClick = async () => {

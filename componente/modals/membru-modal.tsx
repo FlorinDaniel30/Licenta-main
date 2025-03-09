@@ -13,7 +13,7 @@ import {
   ShieldQuestion,
 } from "lucide-react";
 import { useState } from "react";
-import { MemberRole } from "@prisma/client";
+import { MembruRol } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
 import {
@@ -47,17 +47,17 @@ const roleIconMap = {
 
 export const MembersModal = () => {
   const router = useRouter();
-  const { onOpen, isOpen, onClose, type, data } = useModal();
+  const { onOpen, isOpen, onClose, tip, data } = useModal();
   const [loadingId, setLoadingId] = useState("");
 
-  const isModalOpen = isOpen && type === "members";
+  const isModalOpen = isOpen && tip === "membrii";
   const { server } = data as { server: ServerWithMembersWithProfiles };
 
-  const onKick = async (memberId: string) => {
+  const onKick = async (membruId: string) => {
     try {
-      setLoadingId(memberId);
+      setLoadingId(membruId);
       const url = qs.stringifyUrl({
-        url: `/api/members/${memberId}`,
+        url: `/api/members/${membruId}`,
         query: {
           serverId: server?.id,
         },
@@ -66,7 +66,7 @@ export const MembersModal = () => {
       const response = await axios.delete(url);
 
       router.refresh();
-      onOpen("members", { server: response.data });
+      onOpen("membrii", { server: response.data });
     } catch (error) {
       console.log(error);
     } finally {
@@ -74,20 +74,20 @@ export const MembersModal = () => {
     }
   };
 
-  const onRoleChange = async (memberId: string, role: MemberRole) => {
+  const onRoleChange = async (membruId: string, rol: MembruRol) => {
     try {
-      setLoadingId(memberId);
+      setLoadingId(membruId);
       const url = qs.stringifyUrl({
-        url: `/api/members/${memberId}`,
+        url: `/api/members/${membruId}`,
         query: {
           serverId: server?.id,
         },
       });
 
-      const response = await axios.patch(url, { role });
+      const response = await axios.patch(url, { rol });
 
       router.refresh();
-      onOpen("members", { server: response.data });
+      onOpen("membrii", { server: response.data });
     } catch (error) {
       console.log(error);
     } finally {
@@ -103,22 +103,22 @@ export const MembersModal = () => {
             Manage Members
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
-            {server?.members?.length} Members
+            {server?.membrii?.length} Members
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="mt-8 max-h-[420px] pr-6">
-          {server?.members?.map((member) => (
-            <div key={member.id} className="flex items-center gap-x-2 mb-6">
-              <UserAvatar src={member.profile.imageUrl} />
+          {server?.membrii?.map((membru) => (
+            <div key={membru.id} className="flex items-center gap-x-2 mb-6">
+              <UserAvatar src={membru.profil.imagineUrl} />
               <div className="flex flex-col gap-y-1">
                 <div className="text-xs font-semibold flex items-center gap-x-1">
-                  {member.profile.name}
-                  {roleIconMap[member.role]}
+                  {membru.profil.nume}
+                  {roleIconMap[membru.rol]}
                 </div>
-                <p className="text-xs text-zinc-500">{member.profile.email}</p>
+                <p className="text-xs text-zinc-500">{membru.profil.email}</p>
               </div>
-              {server.profileId !== member.profileId &&
-                loadingId !== member.id && (
+              {server.idutilizator !== membru.profilId &&
+                loadingId !== membru.id && (
                   <div className="ml-auto">
                     <DropdownMenu>
                       <DropdownMenuTrigger>
@@ -133,22 +133,22 @@ export const MembersModal = () => {
                           <DropdownMenuPortal>
                             <DropdownMenuSubContent>
                               <DropdownMenuItem
-                                onClick={() => onRoleChange(member.id, "GUEST")}
+                                onClick={() => onRoleChange(membru.id, "GUEST")}
                               >
                                 <Shield className="h-4 w-4 mr-2" />
                                 Guest
-                                {member.role === "GUEST" && (
+                                {membru.rol === "GUEST" && (
                                   <Check className="h-4 w-4 ml-auto" />
                                 )}
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() =>
-                                  onRoleChange(member.id, "MODERATOR")
+                                  onRoleChange(membru.id, "MODERATOR")
                                 }
                               >
                                 <ShieldCheck className="h-4 w-4 mr-2" />
                                 Moderator
-                                {member.role === "MODERATOR" && (
+                                {membru.rol === "MODERATOR" && (
                                   <Check className="h-4 w-4 ml-auto" />
                                 )}
                               </DropdownMenuItem>
@@ -156,7 +156,7 @@ export const MembersModal = () => {
                           </DropdownMenuPortal>
                         </DropdownMenuSub>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={() => onKick(member.id)}>
+                        <DropdownMenuItem onClick={() => onKick(membru.id)}>
                           <Gavel className="h-4 w-4 mr-2" />
                           Kick
                         </DropdownMenuItem>
@@ -164,7 +164,7 @@ export const MembersModal = () => {
                     </DropdownMenu>
                   </div>
                 )}
-              {loadingId === member.id && (
+              {loadingId === membru.id && (
                 <Loader2 className="animate-spin text-zinc-500 ml-auto w-4 h-4" />
               )}
             </div>

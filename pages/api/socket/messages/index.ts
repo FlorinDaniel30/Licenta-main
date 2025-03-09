@@ -1,7 +1,7 @@
 import { NextApiRequest } from "next";
 import { NextApiResponseServerIo } from "@/types";
 import { db } from "@/lib/db";
-import { currentProfile } from "@/lib/profil-curent-pagini";
+import { ProfilCurent } from "@/lib/profil-curent-pagini";
 
 export default async function handler(
   request: NextApiRequest,
@@ -12,11 +12,11 @@ export default async function handler(
   }
 
   try {
-    const profile = await currentProfile(request);
-    const { content, fileUrl } = request.body;
+    const profil = await ProfilCurent(request);
+    const { continut, filaUrl } = request.body;
     const { serverId, channelId } = request.query;
 
-    if (!profile) {
+    if (!profil) {
       return response.status(401).json({ error: "Unauthorized" });
     }
 
@@ -28,21 +28,21 @@ export default async function handler(
       return response.status(400).json({ error: "Channel ID missing" });
     }
 
-    if (!content) {
+    if (!continut) {
       return response.status(400).json({ error: "Content missing" });
     }
 
     const server = await db.server.findFirst({
       where: {
         id: serverId as string,
-        members: {
+        membrii: {
           some: {
-            profileId: profile.id,
+            profilId: profil.id,
           },
         },
       },
       include: {
-        members: true,
+        membrii: true,
       },
     });
 
@@ -50,7 +50,7 @@ export default async function handler(
       return response.status(404).json({ message: "Server not found" });
     }
 
-    const channel = await db.channel.findFirst({
+    const channel = await db.canal.findFirst({
       where: {
         id: channelId as string,
         serverId: serverId as string,
@@ -61,25 +61,25 @@ export default async function handler(
       return response.status(404).json({ message: "Channel not found" });
     }
 
-    const member = server.members.find(
-      (member) => member.profileId === profile.id
+    const member = server.membrii.find(
+      (membru) => membru.profileId === profil.id
     );
 
     if (!member) {
       return response.status(404).json({ message: "Member not found" });
     }
 
-    const message = await db.message.create({
+    const message = await db.mesaje.create({
       data: {
-        content,
-        fileUrl,
-        channelId: channelId as string,
-        memberId: member.id,
+        continut,
+        filaUrl,
+        canalId: channelId as string,
+        membruId: member.id,
       },
       include: {
-        member: {
+        membru: {
           include: {
-            profile: true,
+            profil: true,
           },
         },
       },

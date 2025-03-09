@@ -32,7 +32,7 @@ export const ServerHeader = ({
             >
                 {isModerator && (
                     <DropdownMenuItem className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer"
-                                      onClick={() => onOpen("invite", { server })}
+                                      onClick={() => onOpen("invita", { server })}
                     >
                         Invite People
                         <UserPlus className="h-4 w-4 ml-auto"/>
@@ -41,14 +41,14 @@ export const ServerHeader = ({
                 {isAdmin && (
                     <DropdownMenuItem 
                         className="px-3 py-2 text-sm cursor-pointer"
-                        onClick={() => onOpen("editServer", {server})}>
+                        onClick={() => onOpen("editeazaServer", {server})}>
                         Server Settings
                         <Settings className="h-4 w-4 ml-auto"/>
                     </DropdownMenuItem>
                 )}
                 {isAdmin && (
                     <DropdownMenuItem 
-                        onClick={() => onOpen("members", { server })}
+                        onClick={() => onOpen("membrii", { server })}
                         className="px-3 py-2 text-sm cursor-pointer">
                         Manage Members
                         <Users className="h-4 w-4 ml-auto"/>
@@ -56,7 +56,7 @@ export const ServerHeader = ({
                 )}
                 {isModerator && (
                     <DropdownMenuItem 
-                        onClick={() => onOpen("createChannel")}
+                        onClick={() => onOpen("creazaCanal")}
                         className="px-3 py-2 text-sm cursor-pointer">
                         Create Channel
                         <PlusCircle className="h-4 w-4 ml-auto"/>
@@ -67,7 +67,7 @@ export const ServerHeader = ({
                 )}
                 {isAdmin && (
                     <DropdownMenuItem 
-                    onClick={() => onOpen("deleteServer", { server } )}
+                    onClick={() => onOpen("stergeServer", { server } )}
                     className="text-rose-500 px-3 py-2 text-sm cursor-pointer">
                         Delete Server
                         <Trash className="h-4 w-4 ml-auto"/>
@@ -75,7 +75,7 @@ export const ServerHeader = ({
                 )}
                 {!isAdmin && (
                     <DropdownMenuItem
-                    onClick={() => onOpen("leaveServer", { server } )}
+                    onClick={() => onOpen("parasesteServer", { server } )}
                     className="text-rose-500 px-3 py-2 text-sm cursor-pointer">
                         Leave Server
                         <LogOut className="h-4 w-4 ml-auto"/>

@@ -2,7 +2,7 @@ import { NextApiRequest } from "next";
 
 import { NextApiResponseServerIo } from "@/types";
 import { db } from "@/lib/db";
-import { currentProfile } from "@/lib/profil-curent-pagini";
+import { ProfilCurent } from "@/lib/profil-curent-pagini";
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,7 +13,7 @@ export default async function handler(
   }
 
   try {
-    const profile = await currentProfile(req);
+    const profile = await ProfilCurent(req);
     const { content, fileUrl } = req.body;
     const { conversationId } = req.query;
 
@@ -29,31 +29,31 @@ export default async function handler(
       return res.status(400).json({ error: "Content missing" });
     }
 
-    const conversation = await db.conversation.findFirst({
+    const conversation = await db.conversatie.findFirst({
       where: {
         id: conversationId as string,
         OR: [
           {
-            memberA: {
-              profileId: profile.id,
+            membruA: {
+              profilId: profile.id,
             },
           },
           {
-            memberB: {
-              profileId: profile.id,
+            membruB: {
+              profilId: profile.id,
             },
           },
         ],
       },
       include: {
-        memberA: {
+        membruA: {
           include: {
-            profile: true,
+            profil: true,
           },
         },
-        memberB: {
+        membruB: {
           include: {
-            profile: true,
+            profil: true,
           },
         },
       },
@@ -64,25 +64,25 @@ export default async function handler(
     }
 
     const member =
-      conversation.memberA.profileId === profile.id
-        ? conversation.memberA
-        : conversation.memberB;
+      conversation.membru.profileId === profile.id
+        ? conversation.membruA
+        : conversation.membruB;
 
     if (!member) {
       return res.status(404).json({ message: "Member not found" });
     }
 
-    const message = await db.directMessage.create({
+    const message = await db.mesajeDirecte.create({
       data: {
-        content,
-        fileUrl,
-        conversationId: conversationId as string,
-        memberId: member.id,
+        continut,
+        filaUrl,
+        conversatieId: conversationId as string,
+        membruId: member.id,
       },
       include: {
-        member: {
+        membru: {
           include: {
-            profile: true,
+            profil: true,
           },
         },
       },

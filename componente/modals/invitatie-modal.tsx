@@ -17,7 +17,7 @@ import axios from "axios";
 
 export const InviteModal = () => {
   const { onOpen, isOpen, onClose, tip, data } = useModal();
-  const isModalOpen = isOpen && tip === "invite";
+  const isModalOpen = isOpen && tip === "invita";
   const origin = useOrigin();
   const { server } = data;
   const inviteUrl = `${origin}/invite/${server?.codinvitatie}`;
@@ -39,7 +39,7 @@ export const InviteModal = () => {
       setIsLoading(true);
       const response = await axios.patch(`/api/servers/${server?.id}/invite-code`);
 
-      onOpen("invite", { server: response.data })
+      onOpen("invita", { server: response.data })
     } catch (error) {
       console.log(error);
     } finally {

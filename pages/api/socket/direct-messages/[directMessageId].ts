@@ -1,8 +1,8 @@
 import { NextApiRequest } from "next";
-import { MemberRole } from "@prisma/client";
+import { MembruRol } from "@prisma/client";
 import { NextApiResponseServerIo } from "@/types";
 import { db } from "@/lib/db";
-import { currentProfile } from "@/lib/profil-curent-pagini";
+import { ProfilCurent } from "@/lib/profil-curent-pagini";
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,7 +13,7 @@ export default async function handler(
   }
 
   try {
-    const profile = await currentProfile(req);
+    const profile = await ProfilCurent(req);
     const { directMessageId, conversationId } = req.query;
     const { content } = req.body;
 
@@ -25,58 +25,58 @@ export default async function handler(
       return res.status(400).json({ error: "Conversation ID missing" });
     }
 
-    const conversation = await db.conversation.findFirst({
+    const conversation = await db.conversatie.findFirst({
       where: {
         id: conversationId as string,
         OR: [
           {
-            memberA: {
-              profileId: profile.id,
+            membruA: {
+              profilId: profile.id,
             },
           },
           {
-            memberB: {
-              profileId: profile.id,
+            membruB: {
+              profilId: profile.id,
             },
           },
         ],
       },
       include: {
-        memberA: {
+        membruA: {
           include: {
-            profile: true,
+            profil: true,
           },
         },
-        memberB: {
+        membruB: {
           include: {
-            profile: true,
+            profil: true,
           },
         },
       },
     });
 
-    if (!conversation) {
+    if (!conversatie) {
       return res.status(404).json({ error: "Conversation not found" });
     }
 
     const member =
-      conversation.memberA.profileId === profile.id
-        ? conversation.memberA
-        : conversation.memberB;
+      conversatie.membruA.profilId === profile.id
+        ? conversatie.membruA
+        : conversatie.membruB;
 
     if (!member) {
       return res.status(404).json({ error: "Member not found" });
     }
 
-    let directMessage = await db.directMessage.findFirst({
+    let directMessage = await db.mesajeDirecte.findFirst({
       where: {
         id: directMessageId as string,
-        conversationId: conversationId as string,
+        conversatieId: conversationId as string,
       },
       include: {
-        member: {
+        membru: {
           include: {
-            profile: true,
+            profil: true,
           },
         },
       },
@@ -86,9 +86,9 @@ export default async function handler(
       return res.status(404).json({ error: "Message not found" });
     }
 
-    const isMessageOwner = directMessage.memberId === member.id;
-    const isAdmin = member.role === MemberRole.ADMIN;
-    const isModerator = member.role === MemberRole.MODERATOR;
+    const isMessageOwner = directMessage.membruId === member.id;
+    const isAdmin = member.role === MembruRol.ADMIN;
+    const isModerator = member.role === MembruRol.MODERATOR;
     const canModify = isMessageOwner || isAdmin || isModerator;
 
     if (!canModify) {
@@ -96,17 +96,17 @@ export default async function handler(
     }
 
     if (req.method === "DELETE") {
-      directMessage = await db.directMessage.update({
+      directMessage = await db.mesajeDirecte.update({
         where: {
           id: directMessageId as string,
         },
         data: {
-          fileUrl: null,
-          content: "This message has been deleted.",
+          filaUrl: null,
+          continut: "This message has been deleted.",
           deleted: true,
         },
         include: {
-          member: {
+          membru: {
             include: {
               profile: true,
             },
@@ -120,24 +120,24 @@ export default async function handler(
         return res.status(401).json({ error: "Unauthorized" });
       }
 
-      directMessage = await db.directMessage.update({
+      directMessage = await db.mesajeDirecte.update({
         where: {
           id: directMessageId as string,
         },
         data: {
-          content,
+          continut,
         },
         include: {
-          member: {
+          membru: {
             include: {
-              profile: true,
+              profil: true,
             },
           },
         },
       });
     }
 
-    const updateKey = `chat:${conversation.id}:messages:update`;
+    const updateKey = `chat:${conversatie.id}:messages:update`;
 
     res?.socket?.server?.io?.emit(updateKey, directMessage);
 

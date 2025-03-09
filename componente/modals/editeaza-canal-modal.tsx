@@ -51,7 +51,7 @@ export const EditChannelModal = () => {
   const { isOpen, onClose, tip, data } = useModal();
   const router = useRouter();
 
-  const isModalOpen = isOpen && tip === "editChannel";
+  const isModalOpen = isOpen && tip === "editeazaCanal";
   const { canal, server } = data;
 
   const form = useForm({
