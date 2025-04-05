@@ -13,30 +13,30 @@ export default async function handler(
   }
 
   try {
-    const profile = await ProfilCurent(req);
-    const { directMessageId, conversationId } = req.query;
-    const { content } = req.body;
+    const profil = await ProfilCurent(req);
+    const { directMessageId, conversatieId } = req.query;
+    const { continut } = req.body;
 
-    if (!profile) {
+    if (!profil) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    if (!conversationId) {
+    if (!conversatieId) {
       return res.status(400).json({ error: "Conversation ID missing" });
     }
 
-    const conversation = await db.conversatie.findFirst({
+    const conversatie = await db.conversatie.findFirst({
       where: {
-        id: conversationId as string,
+        id: conversatieId as string,
         OR: [
           {
             membruA: {
-              profilId: profile.id,
+              idutilizator: profil.id,
             },
           },
           {
             membruB: {
-              profilId: profile.id,
+              idutilizator: profil.id,
             },
           },
         ],
@@ -59,19 +59,19 @@ export default async function handler(
       return res.status(404).json({ error: "Conversation not found" });
     }
 
-    const member =
-      conversatie.membruA.profilId === profile.id
+    const membru =
+      conversatie.membruA.idutilizator === profil.id
         ? conversatie.membruA
         : conversatie.membruB;
 
-    if (!member) {
+    if (!membru) {
       return res.status(404).json({ error: "Member not found" });
     }
 
     let directMessage = await db.mesajeDirecte.findFirst({
       where: {
         id: directMessageId as string,
-        conversatieId: conversationId as string,
+        idconversatie: conversatieId as string,
       },
       include: {
         membru: {
@@ -86,9 +86,9 @@ export default async function handler(
       return res.status(404).json({ error: "Message not found" });
     }
 
-    const isMessageOwner = directMessage.membruId === member.id;
-    const isAdmin = member.role === MembruRol.ADMIN;
-    const isModerator = member.role === MembruRol.MODERATOR;
+    const isMessageOwner = directMessage.membruId === membru.id;
+    const isAdmin = membru.rol === MembruRol.ADMIN;
+    const isModerator = membru.rol === MembruRol.MODERATOR;
     const canModify = isMessageOwner || isAdmin || isModerator;
 
     if (!canModify) {
@@ -108,7 +108,7 @@ export default async function handler(
         include: {
           membru: {
             include: {
-              profile: true,
+              profil: true,
             },
           },
         },

@@ -57,7 +57,7 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
             apiUrl="/api/messages"
             socketUrl="/api/socket/messages"
             socketQuery={{
-              channelId: canal.id,
+              canalId: canal.id,
               serverId: canal.serverId,
             }}
             paramKey="canalId"
@@ -68,7 +68,7 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
             tip="canal"
             apiUrl="/api/socket/messages"
             query={{
-              channelId: canal.id,
+              canalId: canal.id,
               serverId: canal.serverId,
             }}
           />

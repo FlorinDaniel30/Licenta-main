@@ -84,7 +84,7 @@ export const InitialModal = () => {
               <div className="flex items-center justify-center text-center">
                 <FormField 
                   control={form.control}
-                  nume="imagineUrl"
+                  name="imagineUrl"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
@@ -97,7 +97,7 @@ export const InitialModal = () => {
               </div>
               <FormField
                 control={form.control}
-                nume="name"
+                name="nume"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className=" uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">

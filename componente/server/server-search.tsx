@@ -19,7 +19,7 @@ interface ServerSearchProps {
     tip: "canal" | "membru",
     data: {
       icon: React.ReactNode;
-      name: string;
+      nume: string;
       id: string;
     }[] | undefined
   }[]
@@ -85,11 +85,11 @@ export const ServerSearch = ({
 
             return (
               <CommandGroup key={label} heading={label}>
-                  {data?.map(({ id, icon, name }) => {
+                  {data?.map(({ id, icon, nume }) => {
                     return (
                       <CommandItem key={id} onSelect={() => onClick({ id, tip })}>
                         {icon}
-                        <span>{name}</span>
+                        <span>{nume}</span>
                       </CommandItem>
                     )
                   })}

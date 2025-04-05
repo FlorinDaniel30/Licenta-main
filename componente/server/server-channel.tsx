@@ -10,7 +10,7 @@ import { ModalType, useModal } from "@/hooks/use-modal-store";
 interface ServerChannelProps {
   canal: Canal;
   server: Server;
-  role?: MembruRol;
+  rol?: MembruRol;
 }
 
 const iconMap = {
@@ -22,7 +22,7 @@ const iconMap = {
 export const ServerChannel = ({
   canal,
   server,
-  role,
+  rol,
 }: ServerChannelProps) => {
   const { onOpen } = useModal();
   const params = useParams();
@@ -57,7 +57,7 @@ export const ServerChannel = ({
       >
         {canal.nume}
       </p>
-      {canal.nume !== "general" && role !== MembruRol.GUEST && (
+      {canal.nume !== "general" && rol !== MembruRol.GUEST && (
         <div className="ml-auto flex items-center gap-x-2">
           <ActionTooltip label="Edit">
             <Edit

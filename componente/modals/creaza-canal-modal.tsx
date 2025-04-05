@@ -50,24 +50,24 @@ export const CreateChannelModal = () => {
   const params = useParams();
   const { isOpen, onClose, tip, data } = useModal();
   const isModalOpen = isOpen && tip === "creazaCanal";
-  const { CanalTip } = data;
+  const { canalTip } = data;
   const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: CanalTip || CanalTip.TEXT,
+      type: canalTip || CanalTip.TEXT,
     },
   });
 
   useEffect(() => {
-    if (CanalTip) {
-      form.setValue("type", CanalTip);
+    if (canalTip) {
+      form.setValue("type", canalTip);
     } else {
       form.setValue("type", CanalTip.TEXT);
     }
-  }, [CanalTip, form]);
+  }, [canalTip, form]);
 
   const isLoading = form.formState.isSubmitting;
 

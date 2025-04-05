@@ -13,34 +13,34 @@ export default async function handler(
   }
 
   try {
-    const profile = await ProfilCurent(req);
-    const { content, fileUrl } = req.body;
-    const { conversationId } = req.query;
+    const profil = await ProfilCurent(req);
+    const { continut, filaUrl } = req.body;
+    const { conversatieId } = req.query;
 
-    if (!profile) {
+    if (!profil) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    if (!conversationId) {
+    if (!conversatieId) {
       return res.status(400).json({ error: "Conversation ID missing" });
     }
 
-    if (!content) {
+    if (!continut) {
       return res.status(400).json({ error: "Content missing" });
     }
 
-    const conversation = await db.conversatie.findFirst({
+    const conversatie = await db.conversatie.findFirst({
       where: {
-        id: conversationId as string,
+        id: conversatieId as string,
         OR: [
           {
             membruA: {
-              profilId: profile.id,
+              idutilizator: profil.id,
             },
           },
           {
             membruB: {
-              profilId: profile.id,
+              idutilizator: profil.id,
             },
           },
         ],
@@ -59,16 +59,16 @@ export default async function handler(
       },
     });
 
-    if (!conversation) {
+    if (!conversatie) {
       return res.status(404).json({ message: "Conversation not found" });
     }
 
-    const member =
-      conversation.membru.profileId === profile.id
-        ? conversation.membruA
-        : conversation.membruB;
+    const membru =
+      conversatie.membru.idutilizator === profil.id
+        ? conversatie.membruA
+        : conversatie.membruB;
 
-    if (!member) {
+    if (!membru) {
       return res.status(404).json({ message: "Member not found" });
     }
 
@@ -76,8 +76,8 @@ export default async function handler(
       data: {
         continut,
         filaUrl,
-        conversatieId: conversationId as string,
-        membruId: member.id,
+        idconversatie: conversatieId as string,
+        membruId: membru.id,
       },
       include: {
         membru: {
@@ -88,7 +88,7 @@ export default async function handler(
       },
     });
 
-    const channelKey = `chat:${conversationId}:messages`;
+    const channelKey = `chat:${conversatieId}:messages`;
 
     res?.socket?.server?.io?.emit(channelKey, message);
 

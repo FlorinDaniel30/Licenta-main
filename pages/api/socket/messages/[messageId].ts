@@ -14,10 +14,10 @@ export default async function handler(
   }
 
   try {
-    const profile = await ProfilCurent(req);
-    const { messageId, serverId, channelId } = req.query;
-    const { content } = req.body;
-    if (!profile) {
+    const profil = await ProfilCurent(req);
+    const { mesajeId, serverId, canalId } = req.query;
+    const { continut } = req.body;
+    if (!profil) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
@@ -25,7 +25,7 @@ export default async function handler(
       return res.status(400).json({ error: "Server ID missing" });
     }
 
-    if (!channelId) {
+    if (!canalId) {
       return res.status(400).json({ error: "Channel ID missing" });
     }
 
@@ -34,7 +34,7 @@ export default async function handler(
         id: serverId as string,
         membrii: {
           some: {
-            profilId: profile.id,
+            idutilizator: profil.id,
           },
         },
       },
@@ -49,7 +49,7 @@ export default async function handler(
 
     const canal = await db.canal.findFirst({
       where: {
-        id: channelId as string,
+        id: canalId as string,
         serverId: serverId as string,
       },
     });
@@ -59,7 +59,7 @@ export default async function handler(
     }
 
     const membru = server.membrii.find(
-      (membru) => membru.profileId === profile.id
+      (membru) => membru.idutilizator === profil.id
     );
 
     if (!membru) {
@@ -68,8 +68,8 @@ export default async function handler(
 
     let message = await db.mesaje.findFirst({
       where: {
-        id: messageId as string,
-        canalId: channelId as string,
+        id: mesajeId as string,
+        canalId: canalId as string,
       },
       include: {
         membru: {
@@ -94,9 +94,9 @@ export default async function handler(
     }
 
     if (req.method === "DELETE") {
-      mesaje = await db.mesaje.update({
+      message = await db.mesaje.update({
         where: {
-          id: messageId as string,
+          id: mesajeId as string,
         },
         data: {
           filaUrl: null,
@@ -118,9 +118,9 @@ export default async function handler(
         return res.status(401).json({ error: "Unauthorized" });
       }
 
-      mesaje = await db.mesaje.update({
+      message = await db.mesaje.update({
         where: {
-          id: messageId as string,
+          id: mesajeId as string,
         },
         data: {
           continut,
@@ -135,7 +135,7 @@ export default async function handler(
       });
     }
 
-    const updateKey = `chat:${channelId}:messages:update`;
+    const updateKey = `chat:${canalId}:messages:update`;
 
     res?.socket?.server?.io?.emit(updateKey, message);
 

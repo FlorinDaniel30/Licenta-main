@@ -67,14 +67,14 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
     (canale) => canale.tip === CanalTip.VIDEO
   );
   const membrii = server?.membrii.filter(
-    (membru) => membru.profilId !== profil.id
+    (membru) => membru.idutilizator !== profil.id
   );
 
   if (!server) {
     return redirect("/");
   }
   const rol = server.membrii.find(
-    (membru) => membru.profilId === profil.id
+    (membru) => membru.idutilizator === profil.id
   )?.rol;
 
   return (
@@ -107,16 +107,16 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 tip: "canal",
                 data: videoChannels?.map((canal) => ({
                   id: canal.id,
-                  name: canal.nume,
+                  nume: canal.nume,
                   icon: iconMap[canal.tip],
                 })),
               },
               {
                 label: "Members",
-                type: "member",
+                tip: "membru",
                 data: membrii?.map((membru) => ({
                   id: membru.id,
-                  name: membru.profil.nume,
+                  nume: membru.profil.nume,
                   icon: roleIconMap[membru.rol],
                 })),
               },
@@ -165,14 +165,14 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
             <ServerSection
               sectionType="channels"
               CanalTip={CanalTip.VIDEO}
-              role={role}
+              rol={rol}
               label="Video Channels"
             />
             {videoChannels.map((channel) => (
               <ServerChannel
                 key={channel.id}
                 canal={channel}
-                role={role}
+                rol={rol}
                 server={server}
               />
             ))}
@@ -182,7 +182,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
           <div className="mb-2">
             <ServerSection
               sectionType="members"
-              role={role}
+              rol={rol}
               label="members Channels"
               server={server}
             />

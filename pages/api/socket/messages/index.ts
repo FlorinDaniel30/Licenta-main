@@ -2,6 +2,7 @@ import { NextApiRequest } from "next";
 import { NextApiResponseServerIo } from "@/types";
 import { db } from "@/lib/db";
 import { ProfilCurent } from "@/lib/profil-curent-pagini";
+import { Membru } from "@prisma/client";
 
 export default async function handler(
   request: NextApiRequest,
@@ -14,7 +15,7 @@ export default async function handler(
   try {
     const profil = await ProfilCurent(request);
     const { continut, filaUrl } = request.body;
-    const { serverId, channelId } = request.query;
+    const { serverId, canalId } = request.query;
 
     if (!profil) {
       return response.status(401).json({ error: "Unauthorized" });
@@ -24,7 +25,7 @@ export default async function handler(
       return response.status(400).json({ error: "Server ID missing" });
     }
 
-    if (!channelId) {
+    if (!canalId) {
       return response.status(400).json({ error: "Channel ID missing" });
     }
 
@@ -37,7 +38,7 @@ export default async function handler(
         id: serverId as string,
         membrii: {
           some: {
-            profilId: profil.id,
+            idutilizator: profil.id,
           },
         },
       },
@@ -50,22 +51,22 @@ export default async function handler(
       return response.status(404).json({ message: "Server not found" });
     }
 
-    const channel = await db.canal.findFirst({
+    const canal = await db.canal.findFirst({
       where: {
-        id: channelId as string,
+        id: canalId as string,
         serverId: serverId as string,
       },
     });
 
-    if (!channel) {
+    if (!canal) {
       return response.status(404).json({ message: "Channel not found" });
     }
 
-    const member = server.membrii.find(
-      (membru) => membru.profileId === profil.id
+    const membru = server.membrii.find(
+      (membru) => membru.idutilizator === profil.id
     );
 
-    if (!member) {
+    if (!membru) {
       return response.status(404).json({ message: "Member not found" });
     }
 
@@ -73,8 +74,8 @@ export default async function handler(
       data: {
         continut,
         filaUrl,
-        canalId: channelId as string,
-        membruId: member.id,
+        canalId: canalId as string,
+        membruId: membru.id,
       },
       include: {
         membru: {
@@ -85,7 +86,7 @@ export default async function handler(
       },
     });
 
-    const channelKey = `chat:${channelId}:messages`;
+    const channelKey = `chat:${canalId}:messages`;
 
     response?.socket?.server?.io?.emit(channelKey, message);
 

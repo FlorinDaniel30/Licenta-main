@@ -17,7 +17,7 @@ export type ModalType =
 interface ModalData {
   server?: Server;
   canal?: Canal;
-  CanalTip?: CanalTip;
+  canalTip?: CanalTip;
   apiUrl?: string;
   query?: Record<string, any>;
 }

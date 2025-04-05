@@ -36,15 +36,15 @@ import {
 import { useEffect } from "react";
 
 const formSchema = z.object({
-  name: z
+  nume: z
     .string()
     .min(1, {
       message: "Channel name is required.",
     })
-    .refine((name) => name !== "general", {
+    .refine((nume) => nume !== "general", {
       message: "Channel name cannot be 'general'",
     }),
-  type: z.nativeEnum(CanalTip),
+  tip: z.nativeEnum(CanalTip),
 });
 
 export const EditChannelModal = () => {
@@ -107,7 +107,7 @@ export const EditChannelModal = () => {
             <div className="space-y-8 px-6">
               <FormField
                 control={form.control}
-                nume="name"
+                name="nume"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
@@ -127,7 +127,7 @@ export const EditChannelModal = () => {
               />
               <FormField
                 control={form.control}
-                nume="type"
+                name="tip"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Channel Type</FormLabel>
@@ -142,10 +142,10 @@ export const EditChannelModal = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {Object.values(ChannelType).map((type) => (
+                        {Object.values(CanalTip).map((tip) => (
                           <SelectItem
-                            key={type}
-                            value={type}
+                            key={tip}
+                            value={tip}
                             className="capitalize"
                           >
                             {tip.toLowerCase()}

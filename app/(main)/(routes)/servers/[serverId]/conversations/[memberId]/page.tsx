@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 
 interface MembruIdPageProps {
   params: {
-    memberId: string;
+    membruId: string;
     serverId: string;
   };
 }
@@ -34,7 +34,7 @@ const MemberIdPage = async ({ params }: MembruIdPageProps) => {
     return redirect("/");
   }
 
-  const conv = await getOrCreateConv(currentMember.id, params.memberId);
+  const conv = await getOrCreateConv(currentMember.id, params.membruId);
 
   if (!conv) {
     return redirect(`/servers/${params.serverId}`);
