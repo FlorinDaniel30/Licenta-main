@@ -1,11 +1,11 @@
 import { ProfilCurent } from "@/lib/profil-curent";
-import { db } from "@/lib/db";
+import { db } from "@/lib/database";
 import { MembruRol } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { canalId: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
     const profil = await ProfilCurent();
@@ -17,7 +17,7 @@ export async function DELETE(
     if (!serverId) {
       return new NextResponse("Server Id missing", { status: 400 });
     }
-    if (!params.canalId) {
+    if (!params.id) {
       return new NextResponse("Channel Id missing", { status: 400 });
     }
     const server = await db.server.update({
@@ -35,7 +35,7 @@ export async function DELETE(
       data: {
         canale: {
           delete: {
-            id: params.canalId,
+            id: params.id,
             nume: {
               not: "general",
             },
@@ -53,7 +53,7 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { canalId: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
     const profil = await ProfilCurent();
@@ -66,7 +66,7 @@ export async function PATCH(
     if (!serverId) {
       return new NextResponse("Server Id missing", { status: 400 });
     }
-    if (!params.canalId) {
+    if (!params.id) {
       return new NextResponse("Channel Id missing", { status: 400 });
     }
     if (nume === "general") {
@@ -89,7 +89,7 @@ export async function PATCH(
         canale: {
           update: {
             where: {
-              id: params.canalId,
+              id: params.id,
               NOT: {
                 nume: "general",
               },

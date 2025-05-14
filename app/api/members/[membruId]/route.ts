@@ -1,5 +1,5 @@
 import { ProfilCurent } from "@/lib/profil-curent"
-import { db } from "@/lib/db";
+import { db } from "@/lib/database";
 import { NextResponse } from "next/server";
 
 export async function DELETE(
@@ -56,7 +56,7 @@ export async function DELETE(
 
 export async function PATCH(
     req: Request,
-    { params }: { params: { memberId:string }}
+    { params }: { params: { membruId:string }}
 ) {
     try{
         const profil = await ProfilCurent();
@@ -73,7 +73,7 @@ export async function PATCH(
             return new NextResponse("Server ID is missing", { status: 400 });
         }
 
-        if(!params.memberId) {
+        if(!params.membruId) {
             return new NextResponse("Member ID is missing", { status: 400 });
         }
 
@@ -86,7 +86,7 @@ export async function PATCH(
                 membrii: {
                     update: {
                         where: {
-                            id: params.memberId,
+                            id: params.membruId,
                             idutilizator:{
                                 not: profil.id
                             }

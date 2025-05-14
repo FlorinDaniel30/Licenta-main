@@ -74,7 +74,7 @@ export const EditChannelModal = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const url = qs.stringifyUrl({
-        url: `/api/channels/${canal?.id}`,
+        url: `/api/canale/${canal?.id}`,
         query: {
           serverId: server?.id,
         },
@@ -99,7 +99,7 @@ export const EditChannelModal = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            Edit Channel
+            Editează Canal
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -111,7 +111,7 @@ export const EditChannelModal = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Channel name
+                      Nume Canal
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -130,7 +130,7 @@ export const EditChannelModal = () => {
                 name="tip"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Channel Type</FormLabel>
+                    <FormLabel>Tipul Canalului</FormLabel>
                     <Select
                       disabled={isLoading}
                       onValueChange={field.onChange}
@@ -160,7 +160,7 @@ export const EditChannelModal = () => {
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
               <Button variant="primary" disabled={isLoading}>
-                Save
+                Salvează
               </Button>
             </DialogFooter>
           </form>

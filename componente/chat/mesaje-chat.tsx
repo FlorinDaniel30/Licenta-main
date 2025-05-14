@@ -27,7 +27,7 @@ interface ChatMessagesProps {
   apiUrl: string;
   socketUrl: string;
   socketQuery: Record<string, string>;
-  paramKey: "canalId" | "conversatieId";
+  paramKey: "canalId" | "idconversatie";
   paramValue: string;
   tip: "canal" | "conversatie";
 }
@@ -57,6 +57,9 @@ export const MesajeChat = ({
       paramKey,
       paramValue,
     });
+    
+   
+    
   useChatSocket({ queryKey, addKey, updateKey });
   useChatScroll({
     chatRef,
@@ -71,7 +74,7 @@ export const MesajeChat = ({
       <div className="flex flex-col flex-1 justify-center items-center">
         <Loader2 className="h-7 w-7 text-zinc-500 animate-spin my-4" />
         <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          Loading messages...
+          Se încarcă mesajele...
         </p>
       </div>
     );
@@ -82,7 +85,7 @@ export const MesajeChat = ({
       <div className="flex flex-col flex-1 justify-center items-center">
         <ServerCrash className="h-7 w-7 text-zinc-500 my-4" />
         <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          Something went wrong!
+          Ceva nu a funcționat corect!
         </p>
       </div>
     );
@@ -101,7 +104,7 @@ export const MesajeChat = ({
               onClick={() => fetchNextPage()}
               className="text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 text-xs my-4 dark:hover:text-zinc-300 transition"
             >
-              Load previous messages
+              Se încarcă mesajele anterioare
             </button>
           )}
         </div>

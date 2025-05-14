@@ -27,8 +27,8 @@ export const ServerSection = ({
       <p className="text-xs upppercase font-semibold text-zinc-500 dark:text-zinc-400">
         {label}
       </p>
-      {rol !== MembruRol.GUEST && sectionType === "channels" && (
-        <ActionTooltip label="Create Channel" side="top">
+      {rol !== MembruRol.INVITAT && sectionType === "channels" && (
+        <ActionTooltip label="Crează canal" side="top">
           <button
             onClick={() => onOpen("creazaCanal", { canalTip:CanalTip })}
             className="text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"

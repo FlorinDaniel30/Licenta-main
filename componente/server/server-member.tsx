@@ -12,7 +12,7 @@ interface ServerMemberProps {
 }
 
 const roleIconMap = {
-  [MembruRol.GUEST]: null,
+  [MembruRol.INVITAT]: null,
   [MembruRol.MODERATOR]: (
     <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500" />
   ),
@@ -24,6 +24,8 @@ export const ServerMember = ({ server, membru }: ServerMemberProps) => {
   const router = useRouter();
 
   const onClick = () => {
+    console.log(`/servers/${params?.serverId}/conversations/${membru.id}`)
+    
     router.push(`/servers/${params?.serverId}/conversations/${membru.id}`);
   };
 

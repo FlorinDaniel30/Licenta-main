@@ -43,12 +43,12 @@ model Server {
 enum MembruRol{
   ADMIN
   MODERATOR
-  GUEST
+  INVITAT
 }
 
 model Membru {
   id String @id @default(uuid())
-  rol MembruRol @default(GUEST)
+  rol MembruRol @default(INVITAT)
 
   idutilizator String
   profil Profil @relation(fields: [idutilizator], references: [id], onDelete: Cascade)

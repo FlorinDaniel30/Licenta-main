@@ -1,7 +1,7 @@
 import { NextApiRequest } from "next";
 
 import { NextApiResponseServerIo } from "@/types";
-import { db } from "@/lib/db";
+import { db } from "@/lib/database";
 import { ProfilCurent } from "@/lib/profil-curent-pagini";
 
 export default async function handler(
@@ -64,7 +64,7 @@ export default async function handler(
     }
 
     const membru =
-      conversatie.membru.idutilizator === profil.id
+      conversatie.membruA.idutilizator === profil.id
         ? conversatie.membruA
         : conversatie.membruB;
 

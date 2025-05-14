@@ -1,17 +1,17 @@
 "use client";
 
-import { CreateServerModal } from "../modals/create-server-modal";
+import { CreazaServerModal } from "../modals/creaza-server-modal";
 import { useEffect, useState } from "react";
-import { InviteModal } from "../modals/invite-modal";
-import { EditServerModal } from "../modals/edit-server-modal";
-import { MembersModal } from "../modals/member-modal";
-import { CreateChannelModal } from "../modals/create-channel-modal";
-import { LeaveServerModal } from "../modals/leave-server-modal";
-import { DeleteServerModal } from "../modals/delete-server-modal";
-import { DeleteChannelModal } from "../modals/delete-channel-modal";
-import { EditChannelModal } from "../modals/edit-channel-modal";
-import { MessageFileModal } from "../modals/message-file-modal";
-import { DeleteMessageModal } from "../modals/delete-message-modal";
+import { InviteModal } from "../modals/invitatie-modal";
+import { EditServerModal } from "../modals/editeaza-server-modal";
+import { MembersModal } from "../modals/membru-modal";
+import { CreazaCanalModal } from "../modals/creaza-canal-modal";
+import { LeaveServerModal } from "../modals/paraseste-server-modal";
+import { DeleteServerModal } from "../modals/sterge-server-modal";
+import { DeleteChannelModal } from "../modals/sterge-canal-modal";
+import { EditChannelModal } from "../modals/editeaza-canal-modal";
+import { MessageFileModal } from "../modals/mesaje-file-modal";
+import { DeleteMessageModal } from "../modals/sterge-mesaj-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -26,11 +26,11 @@ export const ModalProvider = () => {
 
   return (
     <>
-      <CreateServerModal />
+      <CreazaServerModal />
       <InviteModal />
       <EditServerModal />
       <MembersModal />
-      <CreateChannelModal />
+      <CreazaCanalModal />
       <LeaveServerModal />
       <DeleteServerModal />
       <DeleteChannelModal />

@@ -2,7 +2,7 @@ import { NextApiRequest } from "next";
 import { MembruRol } from "@prisma/client";
 
 import { NextApiResponseServerIo } from "@/types";
-import { db } from "@/lib/db";
+import { db } from "@/lib/database";
 import { ProfilCurent } from "@/lib/profil-curent-pagini";
 
 export default async function handler(
@@ -15,7 +15,7 @@ export default async function handler(
 
   try {
     const profil = await ProfilCurent(req);
-    const { mesajeId, serverId, canalId } = req.query;
+    const { messageId, serverId, canalId } = req.query;
     const { continut } = req.body;
     if (!profil) {
       return res.status(401).json({ error: "Unauthorized" });
@@ -68,7 +68,7 @@ export default async function handler(
 
     let message = await db.mesaje.findFirst({
       where: {
-        id: mesajeId as string,
+        id: messageId as string,
         canalId: canalId as string,
       },
       include: {
@@ -96,11 +96,11 @@ export default async function handler(
     if (req.method === "DELETE") {
       message = await db.mesaje.update({
         where: {
-          id: mesajeId as string,
+          id: messageId as string,
         },
         data: {
           filaUrl: null,
-          continut: "This message has been deleted.",
+          continut: "Acest mesaj a fost șters.",
           deleted: true,
         },
         include: {
@@ -120,7 +120,7 @@ export default async function handler(
 
       message = await db.mesaje.update({
         where: {
-          id: mesajeId as string,
+          id: messageId as string,
         },
         data: {
           continut,

@@ -14,13 +14,13 @@ export const ChatWelcome = ({ nume, tip }: ChatWelcomeProps) => {
         </div>
       )}
       <p className="text-xl md:text-3xl font-bold">
-        {tip === "canal" ? "welcome to #" : ""}
+        {tip === "canal" ? "Bun venit pe #" : ""}
         {nume}
       </p>
       <p className="text-zinc-600 dark:text-zinc-400 text-sm">
         {tip === "canal"
-          ? `This is the conversation in #${nume} channel`
-          : `This is the converstaion with ${nume}`}
+          ? `Aceasta este conversația din #${nume} canal`
+          : `Aceasta este conversația cu  ${nume}`}
       </p>
     </div>
   );

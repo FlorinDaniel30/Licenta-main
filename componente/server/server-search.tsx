@@ -44,15 +44,18 @@ export const ServerSearch = ({
     return () => document.removeEventListener("keydown", down)
   }, []);
 
-  const onClick = ({ id, tip }: { id: string, tip: "canal" | "membru"}) => {
+
+ const onClick = async ({ id, tip }: { id: string, tip: "canal" | "membru"}) => {
+
     setOpen(false);
 
+
     if (tip === "membru") {
-      return router.push(`/servers/${params?.serverId}/conversations/${id}`)
+      return router.push(`/servers/${params?.id}/conversations/${id}`)
     }
 
     if (tip === "canal") {
-      return router.push(`/servers/${params?.serverId}/canale/${id}`)
+      return router.push(`/servers/${params?.id}/channels/${id}`)
     }
   }
 
@@ -66,19 +69,15 @@ export const ServerSearch = ({
         <p
           className="font-semibold text-sm text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition"
         >
-          Search
+          Caută
         </p>
-        <kbd
-          className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground ml-auto"
-        >
-          <span className="text-xs">⌘</span>K
-        </kbd>
+        
       </button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Search all channels and members" />
+        <CommandInput placeholder="Caută" />
         <CommandList>
           <CommandEmpty>
-            No Results found
+            Nu au fost rezultate găsite
           </CommandEmpty>
           {data.map(({ label, tip, data }) => {
             if (!data?.length) return null;

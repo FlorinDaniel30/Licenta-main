@@ -49,7 +49,7 @@ export const MessageFileModal = () => {
         url: apiUrl || "",
         query,
       });
-      await axios.post(url, { ...values, content: values.fileUrl });
+      await axios.post(url, { ...values, continut: values.fileUrl });
       form.reset();
       router.refresh();
       handleClose();
@@ -63,7 +63,7 @@ export const MessageFileModal = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            Add an attachment!
+            Adaugă un fișier!
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
             Send a file as a message

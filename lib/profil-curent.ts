@@ -1,7 +1,8 @@
 import { auth } from "@clerk/nextjs";
-import { db } from "@/lib/db";
+import { db } from "@/lib/database";
+import { Profil } from "@prisma/client";
 
-export const ProfilCurent = async () => {
+export const ProfilCurent = async (): Promise<Profil | null> => {
     const { userId } = auth();
 
     if (!userId) {

@@ -1,5 +1,5 @@
 import { ProfilCurent } from "@/lib/profil-curent";
-import { db } from "@/lib/db";
+import { db } from "@/lib/database";
 import { MembruRol } from "@prisma/client";
 import { NextResponse } from "next/server";
 
@@ -10,7 +10,7 @@ export async function POST(
         const profil = await ProfilCurent();
         const { nume, tip } = await req.json();
         const { searchParams } = new URL(req.url);
-
+console.log(searchParams);
         const serverId = searchParams.get("serverId");
         if(!profil){
             return new NextResponse("Unauthorized", { status: 401 });

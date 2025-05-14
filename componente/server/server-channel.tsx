@@ -57,15 +57,15 @@ export const ServerChannel = ({
       >
         {canal.nume}
       </p>
-      {canal.nume !== "general" && rol !== MembruRol.GUEST && (
+      {canal.nume !== "general" && rol !== MembruRol.INVITAT && (
         <div className="ml-auto flex items-center gap-x-2">
-          <ActionTooltip label="Edit">
+          <ActionTooltip label="Editează">
             <Edit
               onClick={(event) => onAction(event, "editeazaCanal")}
               className="hidden group-hover:block w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
             />
           </ActionTooltip>
-          <ActionTooltip label="Delete">
+          <ActionTooltip label="Șterge">
             <Trash
               onClick={(event) => onAction(event, "stergeCanal")}
               className="hidden group-hover:block w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
@@ -75,7 +75,7 @@ export const ServerChannel = ({
       )}
       {canal.nume === "general" && (
         <div className="ml-auto flex items-center gap-x-2">
-          <ActionTooltip label="This channel is protected">
+          <ActionTooltip label="Acest canal nu poate fi șters">
             <Lock className="group-hover:block w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition" />
           </ActionTooltip>
         </div>

@@ -1,5 +1,5 @@
 import { getAuth } from "@clerk/nextjs/server";
-import { db } from "@/lib/db";
+import { db } from "@/lib/database";
 import { NextApiRequest } from "next";
 
 export const ProfilCurent = async (request: NextApiRequest) => {

@@ -40,7 +40,7 @@ import {
 } from "@/componente/ui/dropdown-menu";
 
 const roleIconMap = {
-  GUEST: null,
+  INVITAT: null,
   MODERATOR: <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500" />,
   ADMIN: <ShieldAlert className="h-4 w-4 text-rose-500" />,
 };
@@ -100,10 +100,10 @@ export const MembersModal = () => {
       <DialogContent className="bg-white text-black overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            Manage Members
+            Administrează membri
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
-            {server?.membrii?.length} Members
+            {server?.membrii?.length} Membri
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="mt-8 max-h-[420px] pr-6">
@@ -128,16 +128,16 @@ export const MembersModal = () => {
                         <DropdownMenuSub>
                           <DropdownMenuSubTrigger className="flex items-center">
                             <ShieldQuestion className="w-4 h-4 mr-2" />
-                            <span>Role</span>
+                            <span>Rol</span>
                           </DropdownMenuSubTrigger>
                           <DropdownMenuPortal>
                             <DropdownMenuSubContent>
                               <DropdownMenuItem
-                                onClick={() => onRoleChange(membru.id, "GUEST")}
+                                onClick={() => onRoleChange(membru.id, "INVITAT")}
                               >
                                 <Shield className="h-4 w-4 mr-2" />
-                                Guest
-                                {membru.rol === "GUEST" && (
+                                Invitat
+                                {membru.rol === "INVITAT" && (
                                   <Check className="h-4 w-4 ml-auto" />
                                 )}
                               </DropdownMenuItem>
@@ -158,7 +158,7 @@ export const MembersModal = () => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={() => onKick(membru.id)}>
                           <Gavel className="h-4 w-4 mr-2" />
-                          Kick
+                          Elimină
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

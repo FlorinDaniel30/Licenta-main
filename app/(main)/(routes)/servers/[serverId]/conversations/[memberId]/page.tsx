@@ -3,13 +3,13 @@ import { ChatInput } from "@/componente/chat/chat-input";
 import { MesajeChat } from "@/componente/chat/mesaje-chat";
 import { getOrCreateConv } from "@/lib/conversatii";
 import { ProfilCurent } from "@/lib/profil-curent";
-import { db } from "@/lib/db";
+import { db } from "@/lib/database";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 interface MembruIdPageProps {
   params: {
-    membruId: string;
+    memberId: string;
     serverId: string;
   };
 }
@@ -29,19 +29,25 @@ const MemberIdPage = async ({ params }: MembruIdPageProps) => {
       profil: true,
     },
   });
+  console.log(currentMember)
 
   if (!currentMember) {
+    console.log("nu am current member")
     return redirect("/");
   }
+console.log(params)
+  const conv = await getOrCreateConv(currentMember.id, params.memberId);
 
-  const conv = await getOrCreateConv(currentMember.id, params.membruId);
+ console.log(conv) 
 
   if (!conv) {
+   console.log("!convvvv")
     return redirect(`/servers/${params.serverId}`);
   }
 
   const { membruA, membruB } = conv;
   const otherMember = membruA.idutilizator === profil.id ? membruB : membruA;
+  console.log("return")
 
   return (
     <div className="bg-white dark:bg-[#25262a] flex flex-col h-full">
@@ -57,11 +63,11 @@ const MemberIdPage = async ({ params }: MembruIdPageProps) => {
         chatId={conv.id}
         tip="conversatie"
         apiUrl="/api/direct-messages"
-        paramKey="conversatieId"
+        paramKey="idconversatie"
         paramValue={conv.id}
         socketUrl="/api/socket/direct-messages"
         socketQuery={{
-          conversationId: conv.id,
+          idconversatie: conv.id,
         }}
       />
       <ChatInput
@@ -69,7 +75,7 @@ const MemberIdPage = async ({ params }: MembruIdPageProps) => {
         tip="conversatie"
         apiUrl="/api/socket/direct-messages"
         query={{
-          conversationId: conv.id,
+          idconversatie: conv.id,
         }}
       />
     </div>

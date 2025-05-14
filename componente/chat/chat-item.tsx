@@ -35,13 +35,13 @@ interface ChatItemProps {
 }
 
 const roleIconMap = {
-  GUEST: null,
+  INVITAT: null,
   MODERATOR: <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500" />,
   ADMIN: <ShieldAlert className="h-4 w-4 ml-2 text-rose-500" />,
 };
 
 const formSchema = z.object({
-  content: z.string().min(1),
+  continut: z.string().min(1),
 });
 
 export const ChatItem = ({
@@ -77,14 +77,13 @@ export const ChatItem = ({
     };
 
     window.addEventListener("keydown", handleKeyDown);
-
     return () => window.removeEventListener("keyDown", handleKeyDown);
   }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      content: continut,
+      continut: continut,
     },
   });
 
@@ -107,20 +106,22 @@ export const ChatItem = ({
   };
 
   useEffect(() => {
-    form.reset({
-      content: continut,
-    });
+    form.reset({ continut });
   }, [continut]);
 
   const fileType = filaUrl?.split(".").pop();
-
   const isAdmin = currentMember.rol === MembruRol.ADMIN;
   const isModerator = currentMember.rol === MembruRol.MODERATOR;
   const isOwner = currentMember.id === membru.id;
+
   const canDeleteMessage = !deleted && (isAdmin || isModerator || isOwner);
   const canEditMessage = !deleted && isOwner && !filaUrl;
+
   const isPDF = fileType === "pdf" && filaUrl;
   const isImage = !isPDF && filaUrl;
+  const isContentImage =
+    !filaUrl && continut.match(/\.(jpg|jpeg|png|gif|webp)$/i);
+  const isContentPDF = !filaUrl && continut.match(/\.pdf$/i);
 
   return (
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
@@ -148,6 +149,8 @@ export const ChatItem = ({
               {timestamp}
             </span>
           </div>
+
+          {/* Imagine din filaUrl */}
           {isImage && (
             <a
               href={filaUrl}
@@ -163,6 +166,25 @@ export const ChatItem = ({
               />
             </a>
           )}
+
+          {/* Imagine din continut */}
+          {isContentImage && (
+            <a
+              href={continut}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative aspect-square rounded-md mt-2 overflow-hidden border flex items-center bg-secondary h-48 w-48"
+            >
+              <Image
+                src={continut}
+                alt="imagine trimisă"
+                fill
+                className="object-cover"
+              />
+            </a>
+          )}
+
+          {/* PDF din filaUrl */}
           {isPDF && (
             <div className="relative flex items-center p-2 mt-2 rounded-md bg-background/10">
               <FileIcon className="h-10 w-10 fill-indigo-200 stroke-indigo-400" />
@@ -176,23 +198,42 @@ export const ChatItem = ({
               </a>
             </div>
           )}
-          {!filaUrl && !isEditing && (
+
+          {/* PDF din continut */}
+          {isContentPDF && (
+            <div className="relative flex items-center p-2 mt-2 rounded-md bg-background/10">
+              <FileIcon className="h-10 w-10 fill-indigo-200 stroke-indigo-400" />
+              <a
+                href={continut}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline"
+              >
+                PDF File
+              </a>
+            </div>
+          )}
+
+          {/* Text simplu */}
+          {!filaUrl && !isContentImage && !isContentPDF && !isEditing && (
             <p
               className={cn(
-                "text-sm text-zinc-600 dark:text-zinc-300",
+                "text-sm text-zinc-600 dark:text-neutral-100",
                 deleted &&
                   "italic text-zinc-500 dark:text-zinc-400 text-xs mt-1"
               )}
             >
               {continut}
               {isUpdated && !deleted && (
-                <span className="text-[10px] mx-2 text-zinc-500 dark:text-zinc-400">
-                  (edited)
+                <span className="text-[10px] mx-2 text-zinc-500 dark:text-gray-500">
+                  (editat)
                 </span>
               )}
             </p>
           )}
-          {!filaUrl && isEditing && (
+
+          {/* Form editare */}
+          {!filaUrl && !isContentImage && !isContentPDF && isEditing && (
             <Form {...form}>
               <form
                 className="flex items-center w-full gap-x-2 pt-2"
@@ -200,7 +241,7 @@ export const ChatItem = ({
               >
                 <FormField
                   control={form.control}
-                  name="content"
+                  name="continut"
                   render={({ field }) => (
                     <FormItem className="flex-1">
                       <FormControl>
@@ -217,27 +258,29 @@ export const ChatItem = ({
                   )}
                 />
                 <Button disabled={isLoading} size="sm" variant="primary">
-                  Save
+                  Salvează
                 </Button>
               </form>
               <span className="text-[10px] mt-1 text-zinc-400">
-                Press escape to cancel, enter to save
+                Apasă Escape pentru a anula, Enter pentru a salva
               </span>
             </Form>
           )}
         </div>
       </div>
+
+      {/* Acțiuni editare/ștergere */}
       {canDeleteMessage && (
         <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm">
           {canEditMessage && (
-            <ActionTooltip label="Edit">
+            <ActionTooltip label="Editează">
               <Edit
                 onClick={() => setIsEditing(true)}
                 className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
               />
             </ActionTooltip>
           )}
-          <ActionTooltip label="Delete">
+          <ActionTooltip label="Șterge">
             <Trash
               onClick={() =>
                 onOpen("stergeMesaj", {

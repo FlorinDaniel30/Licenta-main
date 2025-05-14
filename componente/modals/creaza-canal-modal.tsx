@@ -35,18 +35,18 @@ import { CanalTip } from "@prisma/client";
 import { useEffect } from "react";
 
 const formSchema = z.object({
-  name: z
+  nume: z
     .string()
     .min(1, {
-      message: "Channel name is required.",
+      message: "Un nume este necesar.",
     })
     .refine((name) => name !== "general", {
-      message: 'Channel can\'t be "general"',
+      message: 'Numele canalului nu poate fi general"',
     }),
-  type: z.nativeEnum(CanalTip),
+  tip: z.nativeEnum(CanalTip),
 });
 
-export const CreateChannelModal = () => {
+export const CreazaCanalModal = () => {
   const params = useParams();
   const { isOpen, onClose, tip, data } = useModal();
   const isModalOpen = isOpen && tip === "creazaCanal";
@@ -56,16 +56,16 @@ export const CreateChannelModal = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      type: canalTip || CanalTip.TEXT,
+      nume: "",
+      tip: canalTip || CanalTip.TEXT,
     },
   });
 
   useEffect(() => {
     if (canalTip) {
-      form.setValue("type", canalTip);
+      form.setValue("tip", canalTip);
     } else {
-      form.setValue("type", CanalTip.TEXT);
+      form.setValue("tip", CanalTip.TEXT);
     }
   }, [canalTip, form]);
 
@@ -74,7 +74,7 @@ export const CreateChannelModal = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const url = qs.stringifyUrl({
-        url: "/api/channels",
+        url: "/api/canale",
         query: {
           serverId: params?.serverId,
         },
@@ -99,7 +99,7 @@ export const CreateChannelModal = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            Create channel
+            Crează un Channel
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -107,17 +107,17 @@ export const CreateChannelModal = () => {
             <div className="space-y-8 px-6">
               <FormField
                 control={form.control}
-                name="name"
+                name="nume"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className=" uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Channel name
+                      Nume Canal
                     </FormLabel>
                     <FormControl>
                       <Input
                         disabled={isLoading}
                         className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder="Enter channel name"
+                        placeholder="Scrie numele channel-ului"
                         {...field}
                       />
                     </FormControl>
@@ -127,10 +127,10 @@ export const CreateChannelModal = () => {
               />
               <FormField
                 control={form.control}
-                name="type"
+                name="tip"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Channel Type</FormLabel>
+                    <FormLabel>Tipul Canalului</FormLabel>
                     <Select
                       disabled={isLoading}
                       onValueChange={field.onChange}
@@ -160,7 +160,7 @@ export const CreateChannelModal = () => {
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
               <Button variant="primary" disabled={isLoading}>
-                Create
+                Crează
               </Button>
             </DialogFooter>
           </form>

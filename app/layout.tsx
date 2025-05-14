@@ -7,6 +7,7 @@ import { ModalProvider } from "@/componente/providers/modal-provider";
 import { ThemeProvider } from "@/componente/providers/theme-provider";
 import { SocketProvider } from "@/componente/providers/socket-provider";
 import { QueryProvider } from "@/componente/providers/query-provider";
+import { clerkLocalization } from "@/lib/clerk-localization";
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -21,9 +22,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning={true}>
-        <body className={cn(font.className, "bg-white dark:bg-[#313338]")}>
+    <ClerkProvider localization={clerkLocalization}>
+      <html lang="ro" suppressHydrationWarning={true}>
+        <body className={cn(font.className, "bg-[#dfb27b] dark:bg-[#422a70]")}>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"

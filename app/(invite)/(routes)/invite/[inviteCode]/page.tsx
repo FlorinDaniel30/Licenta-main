@@ -1,5 +1,5 @@
 import { ProfilCurent } from "@/lib/profil-curent";
-import { db } from "@/lib/db";
+import { db } from "@/lib/database";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
@@ -9,17 +9,23 @@ interface InviteCodePageProps{
     };
 };
 
-const InviteCodePage = async(
-    {params} : InviteCodePageProps
-) => {
+const InviteCodePage = async({ params }: InviteCodePageProps) => {
     const profil = await ProfilCurent();
 
-    if (!profil){
-        return redirectToSignIn();
-    }
+    
+    if (!profil) {
+  const origin = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const redirectUrl = `${origin}/sign-in?redirect_url=/invite/${params.inviteCode}`;
+
+  return redirect(redirectUrl);
+}
+
+    
+
     if (!params.inviteCode){
         return redirect("/");
     }
+
 
     const existingServer = await db.server.findFirst({
         where:{

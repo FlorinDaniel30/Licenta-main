@@ -9,13 +9,20 @@ export const NavigationAction = () => {
 
     return (
         <div>
-            <ActionTooltip side="right" align="center" label="Add a server">
+            <ActionTooltip side="right" align="center" label="Adaugă un server">
             <button 
             onClick={ () => onOpen("creazaServer")}
             className="group flex items-center">
-                <div className="flex mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden items-center justify-center bg-background dark:bg-neutral-700 group-hover:bg-emerald-500">
-                    <Plus 
-                    className="group-hover:text-white transition text-emerald-500" size={25}/>
+  <div className="flex mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden items-center justify-center 
+    bg-orange-900 dark:bg-purple-900 
+    group-hover:bg-orange-400 dark:group-hover:bg-purple-500">
+    
+    <Plus
+  className="group-hover:text-white transition 
+             text-orange-100 dark:text-purple-200"
+  size={25}
+/>
+
                 </div>
             </button>
             </ActionTooltip>

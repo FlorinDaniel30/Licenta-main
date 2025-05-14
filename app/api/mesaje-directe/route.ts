@@ -1,5 +1,5 @@
 import { ProfilCurent } from "@/lib/profil-curent";
-import { db } from "@/lib/db";
+import { db } from "@/lib/database";
 import { MesajeDirecte } from "@prisma/client";
 import { NextResponse } from "next/server";
 
@@ -17,7 +17,7 @@ export async function GET(request: Request) {
       return new NextResponse("Unauthorized!", { status: 401 });
     }
     if (!idconversatie) {
-      return new NextResponse("Channel Id missing!", { status: 400 });
+      return new NextResponse("Conversation Id missing!", { status: 400 });
     }
 
     let mesaje: MesajeDirecte[] = [];

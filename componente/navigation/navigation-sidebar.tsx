@@ -1,5 +1,5 @@
 import { ProfilCurent } from "@/lib/profil-curent";
-import { db } from "@/lib/db";
+import { db } from "@/lib/database";
 import { redirect } from "next/navigation";
 import { NavigationAction } from "@/componente/navigation/navigation-action";
 import { Separator } from "@/componente/ui/separator";
@@ -19,16 +19,16 @@ export const NavigationSidebar = async () => {
     where: {
       membrii: {
         some: {
-          id: profil.id,
+          idutilizator: profil.id,
         },
       },
     },
   });
 
   return (
-    <div className="space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#1E1F22] bg-[#dcdfe2] py-3">
+    <div className="space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#1f0d30] bg-[#b17c1b] py-3">
       <NavigationAction />
-      <Separator className="h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto" />
+      <Separator className="h-[2px] bg-orange-700 dark:bg-violet-700 rounded-md w-10 mx-auto" />
       <ScrollArea className="flex-1 w-full">
         {servers.map((server) => (
           <div key={server.id} className="mb-4">

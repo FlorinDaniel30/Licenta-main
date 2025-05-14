@@ -1,16 +1,10 @@
-import { useEffect, useState } from "react"
+"use client";
 
 export const useOrigin = () => {
-    const [mounted, setMounted] = useState(false);
+  if (typeof window !== "undefined") {
+    return window.location.origin;
+  }
 
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
-    const origin = typeof window !== "undefined" && window.location.origin ? window.location.origin : "";
-
-    if (!mounted) {
-        return "";
-    }
-    return origin;
-}
+  // fallback pentru server context
+  return process.env.NEXT_PUBLIC_APP_URL || "";
+};

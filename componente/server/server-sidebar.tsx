@@ -1,5 +1,5 @@
 import { ProfilCurent } from "@/lib/profil-curent";
-import { db } from "@/lib/db";
+import { db } from "@/lib/database";
 import { CanalTip, MembruRol } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { ServerHeader } from "./server-header";
@@ -7,7 +7,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { ServerSearch } from "./server-search";
 import { Hash, Mic, ShieldAlert, ShieldCheck, Video } from "lucide-react";
 import { Separator } from "../ui/separator";
-import { ServerSection } from "./server-section";
+import { ServerSection } from "./server-sectiune";
 import { ServerChannel } from "./server-channel";
 import { ServerMember } from "./server-member";
 
@@ -22,7 +22,7 @@ const iconMap = {
 };
 
 const roleIconMap = {
-  [MembruRol.GUEST]: null,
+  [MembruRol.INVITAT]: null,
   [MembruRol.MODERATOR]: (
     <ShieldCheck className="h-4 w-4 mr-2 text-indigo-500" />
   ),
@@ -78,14 +78,14 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
   )?.rol;
 
   return (
-    <div className="flex flex-col h-full text-primary w-full dark:bg-[#2B2D31] bg-[#F2F3F5]">
+    <div className="flex flex-col h-full text-primary w-full dark:bg-[#29103a79] bg-[#dbb788]">
       <ServerHeader server={server} role={rol} />
       <ScrollArea className="flex-1 px-3">
         <div className="mt-2">
           <ServerSearch
             data={[
               {
-                label: "Text Channel",
+                label: "Canal Text",
                 tip: "canal",
                 data: textChannels?.map((canal) => ({
                   id: canal.id,
@@ -94,7 +94,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 })),
               },
               {
-                label: "Voice Channel",
+                label: "Canal Vocal",
                 tip: "canal",
                 data: audioChannels?.map((canal) => ({
                   id: canal.id,
@@ -103,7 +103,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 })),
               },
               {
-                label: "Video Channel",
+                label: "Canal Video",
                 tip: "canal",
                 data: videoChannels?.map((canal) => ({
                   id: canal.id,
@@ -112,7 +112,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 })),
               },
               {
-                label: "Members",
+                label: "Membrii",
                 tip: "membru",
                 data: membrii?.map((membru) => ({
                   id: membru.id,
@@ -123,14 +123,15 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
             ]}
           />
         </div>
-        <Separator className="bg-zinc-200 dark:bg-zinc-700 rounded-md my-2" />
+       <Separator className="bg-[#ffb732] dark:bg-[#7e4bd1] rounded-md my-2" />
+
         {!!textChannels?.length && (
           <div className="mb-2">
             <ServerSection
               sectionType="channels"
               CanalTip={CanalTip.TEXT}
               rol={rol}
-              label="Text Channels"
+              label="Canale Text"
             />
             {textChannels.map((channel) => (
               <ServerChannel
@@ -148,7 +149,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               sectionType="channels"
               CanalTip={CanalTip.AUDIO}
               rol={rol}
-              label="Audio Channels"
+              label="Canale Audio"
             />
             {audioChannels.map((channel) => (
               <ServerChannel
@@ -166,7 +167,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
               sectionType="channels"
               CanalTip={CanalTip.VIDEO}
               rol={rol}
-              label="Video Channels"
+              label="Canale Video"
             />
             {videoChannels.map((channel) => (
               <ServerChannel
@@ -183,7 +184,7 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
             <ServerSection
               sectionType="members"
               rol={rol}
-              label="members Channels"
+              label="Membrii"
               server={server}
             />
             {membrii.map((membru) => (

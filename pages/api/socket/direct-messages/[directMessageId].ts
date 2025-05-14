@@ -16,6 +16,7 @@ export default async function handler(
     const profil = await ProfilCurent(req);
     const { directMessageId, conversatieId } = req.query;
     const { continut } = req.body;
+    console.log(req.query)
 
     if (!profil) {
       return res.status(401).json({ error: "Unauthorized" });
@@ -102,7 +103,7 @@ export default async function handler(
         },
         data: {
           filaUrl: null,
-          continut: "This message has been deleted.",
+          continut: "Acest mesaj a fost șters.",
           deleted: true,
         },
         include: {

@@ -7,7 +7,7 @@ import { ChatHeader } from "@/componente/chat/chat-header";
 import { ChatInput } from "@/componente/chat/chat-input";
 import { MesajeChat } from "@/componente/chat/mesaje-chat";
 import { MediaRoom } from "@/componente/media-room";
-import { db } from "@/lib/db";
+import { db } from "@/lib/database";
 
 interface ChannelIdPageProps {
   params: {
@@ -41,7 +41,7 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
   }
 
   return (
-    <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
+    <div className="bg-background flex flex-col h-full">
       <ChatHeader
         nume={canal.nume}
         serverId={canal.serverId}

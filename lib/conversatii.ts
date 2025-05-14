@@ -1,10 +1,10 @@
-import { db } from "./db";
+import { db } from "./database";
 
 export const getOrCreateConv = async (membruAid: string, membruBid: string) => {
   let conv =
     (await findConversation(membruAid, membruBid)) ||
     (await findConversation(membruBid, membruAid));
-
+console.log(conv)
   if (!conv) {
     conv = await createNewConv(membruAid, membruBid);
   }
@@ -36,8 +36,13 @@ const findConversation = async (membruAid: string, membruBid: string) => {
 };
 
 const createNewConv = async (membruAid: string, membruBid: string) => {
+  console.log("create")
   try {
-    return await db.conversatie.create({
+    console.log(
+   membruAid + "\n" + 
+   membruBid
+    )
+   const conversatie= await db.conversatie.create({
       data: {
         membruAid,
         membruBid,
@@ -55,6 +60,8 @@ const createNewConv = async (membruAid: string, membruBid: string) => {
         },
       },
     });
+    console.log(conversatie)
+    return conversatie
   } catch (e) {
     return null;
   }
