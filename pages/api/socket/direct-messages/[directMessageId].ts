@@ -1,7 +1,7 @@
 import { NextApiRequest } from "next";
 import { MembruRol } from "@prisma/client";
 import { NextApiResponseServerIo } from "@/types";
-import { db } from "@/lib/db";
+import { db } from "@/lib/database";
 import { ProfilCurent } from "@/lib/profil-curent-pagini";
 
 export default async function handler(
